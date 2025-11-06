@@ -1,0 +1,29 @@
+name = "streamalphax-kyc"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+account_id = "ad3f5e056c336689bdc49c180358f5b2"
+
+# KV 命名空间（用于存储 KYC 数据）
+[[kv_namespaces]]
+binding = "KYC_DATA"
+id = "776630d558474c1583bef5b07e057214"
+
+# 环境变量
+[vars]
+COMPANY_NAME = "StreamAlphaX"
+WELCOME_MESSAGE = "Secure financial identity verification"
+LOGO_URL = "https://streamalphax.com/logo.png"
+
+# 密钥（使用 wrangler secret）
+# wrangler secret put ID_ANALYZER_API_KEY
+# wrangler secret put ID_ANALYZER_PROFILE_ID
+# wrangler secret put WEBHOOK_SECRET
+
+# 子域名路由配置
+[[routes]]
+pattern = "kyc.streamalphax.com/api/kyc/*"
+zone_name = "streamalphax.com"
+
+[[routes]]
+pattern = "kyc.streamalphax.com/kyc/*"
+zone_name = "streamalphax.com"

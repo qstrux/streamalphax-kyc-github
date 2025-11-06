@@ -1,0 +1,31 @@
+{
+  "name": "streamalphax-kyc",
+  "version": "2.0.0",
+  "description": "StreamAlphaX KYC verification system with ID Analyzer DocuPass",
+  "main": "src/index.js",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "logs": "wrangler tail",
+    "secrets:list": "wrangler secret list",
+    "auth:whoami": "wrangler whoami",
+    "auth:login": "wrangler login",
+    "kv:list": "wrangler kv:key list --binding KYC_DATA"
+  },
+  "keywords": [
+    "kyc",
+    "identity-verification", 
+    "cloudflare-workers",
+    "id-analyzer",
+    "docupass",
+    "financial-services"
+  ],
+  "author": "StreamAlphaX",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
