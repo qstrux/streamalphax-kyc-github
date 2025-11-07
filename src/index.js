@@ -3,42 +3,23 @@
  * Hardened Cloudflare Worker for ID Analyzer DocuPass integration.
  */
 
-export default {
-  return new Response(
-    '<!DOCTYPE html>' +
-    '<html lang="en">' +
-    '<head>' +
-    '  <meta charset="UTF-8">' +
-    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-    '  <title>Upload ID - ' + company + '</title>' +
-    '  <style>' +
-    '    * { margin: 0; padding: 0; box-sizing: border-box; }' +
-    '    body { ' +
-    '      font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif;' +
-    '      background: #f8f9fa;' +
-    '      display: flex;' +
-    '      align-items: center;' +
-    '      justify-content: center;' +
-    '      min-height: 100vh;' +
-    '      padding: 20px;' +
-    '    }' +
-    '    .container {' +
-    '      background: white;' +
-    '      padding: 32px;' +
-    '      border-radius: 8px;' +
-    '      box-shadow: 0 2px 8px rgba(0,0,0,0.1);' +
-    '      max-width: 420px;' +
-    '      width: 100%;' +
-    '    }' +
-    '    h1 { color: #1f2937; font-size: 20px; margin-bottom: 12px; }' +
-    '    .note { color: #374151; margin-bottom: 16px; line-height: 1.4; }' +
-    '    label { display:block; margin-top: 10px; font-size: 14px; color:#374151; }' +
-    '    select, input[type=file] { width:100%; padding:10px; margin-top:8px; border-radius:6px; border:1px solid #d1d5db; }' +
-    '    .requirement { margin-top:16px; color:#374151; }' +
-    '    .requirement b { display:block; margin-bottom:6px; }' +
-    '    .requirement ul { margin-left:20px; color:#374151; }' +
-    '    .btn { margin-top:18px; background:#2563eb; color:white; border:none; padding:12px 18px; border-radius:6px; width:100%; font-size:16px; cursor:pointer; }' +
-    '  </style>' +
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request, event));
+});
+
+async function handleRequest(request, event) {
+  const url = new URL(request.url);
+  const env = event?.env || {};
+  if (url.pathname === '/kyc/start') {
+    return pageStart(env);
+  } else if (url.pathname === '/kyc/upload') {
+    return pageUpload(env);
+  } else if (url.pathname === '/kyc/success') {
+    return pageSuccess(url, env);
+  }
+  // ...existing API and fallback logic...
+  return new Response('Not Found', { status: 404 });
+}
     '</head>' +
     '<body>' +
     '  <div class="container">' +
