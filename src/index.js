@@ -3,6 +3,27 @@
  * Hardened Cloudflare Worker for ID Analyzer DocuPass integration.
  */
 
+async function handleRequest(request, event) {
+  const url = new URL(request.url);
+  const env = event?.env || {};
+  if (url.pathname === '/' || url.pathname === '/kyc/start') {
+    return pageStart(env);
+  }
+  if (url.pathname === '/kyc/upload') {
+    return pageUpload(env);
+  }
+  if (url.pathname === '/kyc/success') {
+    return pageSuccess(url, env);
+  }
+  if (url.pathname === '/kyc/review') {
+    return pageReview(url, env);
+  }
+  if (url.pathname === '/kyc/rejected') {
+    return pageRejected(url, env);
+  }
+  return new Response('Not Found', { status: 404 });
+}
+
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request, event));
 });
