@@ -31,36 +31,17 @@ export default {
         );
       }
 
-      // User pages
-      if (url.pathname === '/kyc/success') return pageSuccess(url, env);
-      if (url.pathname === '/kyc/review') return pageReview(url, env);
-      if (url.pathname === '/kyc/rejected') return pageRejected(url, env);
-      if (url.pathname === '/kyc/start') return pageStart(env);
-      if (url.pathname === '/kyc/upload') return pageUpload(env);
-
-      return new Response('Not Found', { status: 404 });
-    } catch (error) {
-      console.error('Error:', error);
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      <script>
+      document.getElementById('startBtn').addEventListener('click', () => {
+        const btn = document.getElementById('startBtn');
+        const msg = document.getElementById('message');
+        btn.disabled = true;
+        msg.className = 'loading';
+        msg.textContent = 'Setting up your verification…';
+        // small delay so user sees the message, then go to upload step
+        setTimeout(() => { window.location.href = '/kyc/upload'; }, 250);
       });
-    }
-  },
-};
-
-// --- Helpers ---
-const ALLOW_ORIGINS = ['https://streamalphax.com', 'https://kyc.streamalphax.com'];
-function buildCorsHeaders(origin) {
-  const allow = ALLOW_ORIGINS.includes(origin) ? origin : 'https://kyc.streamalphax.com';
-  return {
-    'Access-Control-Allow-Origin': allow,
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, X-Signature',
-  };
-}
-
-// --- Webhook ---
+    </script>
 async function handleWebhook(request, env, corsHeaders) {
   if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
@@ -501,18 +482,18 @@ function pageUpload(env) {
       if (it.includes('passport') && country === 'United States') {
         notice.textContent = "Please upload a photo of your U.S. passport’s data page to continue.";
       } else if (it.includes('passport')) {
-        notice.textContent = `Please upload a photo of your ${country} passport’s data page to continue.`;
+        notice.textContent = 'Please upload a photo of your ' + country + " passport’s data page to continue.";
       } else if (it.includes('driver')) {
         if (country === 'United States') {
           notice.textContent = "Please upload photos of the front and back of your U.S. driver’s license to continue.";
-        } else {
-          notice.textContent = `Please upload photos of the front and back of your ${country} driver’s license to continue.`;
+          } else {
+          notice.textContent = 'Please upload photos of the front and back of your ' + country + " driver's license to continue.";
         }
       } else if (it.includes('id') || it.includes('identification') || it.includes('national')) {
         if (country === 'United States') {
           notice.textContent = "Please upload photos of the front and back of your U.S. ID card to continue.";
         } else {
-          notice.textContent = `Please upload photos of the front and back of your ${country} ID card to continue.`;
+          notice.textContent = 'Please upload photos of the front and back of your ' + country + " ID card to continue.";
         }
       } else {
         notice.textContent = 'Please verify your identity by uploading a government-issued ID. Select the country that issued your document and the type of ID to continue.';
@@ -528,38 +509,35 @@ function pageUpload(env) {
       const country = document.getElementById('country').value;
       const preview = document.getElementById('previewArea');
       if (idtype.includes('driver')){
-        preview.innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">
-            <div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">FRONT</div>
-            <div style="color:#6b7280;margin-bottom:12px;">Driver's License</div>
-          </div>
-          <div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">
-            <div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">BACK</div>
-            <div style="color:#6b7280;margin-bottom:12px;">Driver's License</div>
-          </div>
-          <button id="uploadPhotoBtn" type="button" style="background:#1e90ff;color:white;border:none;padding:10px 16px;border-radius:6px;font-size:16px;cursor:pointer;">Upload Photos</button>
-        </div>`;
+        preview.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px;">'
+          + '<div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">'
+            + '<div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">FRONT</div>'
+            + '<div style="color:#6b7280;margin-bottom:12px;">Driver\'s License</div>'
+          + '</div>'
+          + '<div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">'
+            + '<div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">BACK</div>'
+            + '<div style="color:#6b7280;margin-bottom:12px;">Driver\'s License</div>'
+          + '</div>'
+          + '<button id="uploadPhotoBtn" type="button" style="background:#1e90ff;color:white;border:none;padding:10px 16px;border-radius:6px;font-size:16px;cursor:pointer;">Upload Photos</button>'
+        + '</div>';
       } else if (idtype.includes('id') || idtype.includes('identification') || idtype.includes('national')){
-        preview.innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">
-            <div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">FRONT</div>
-            <div style="color:#6b7280;margin-bottom:12px;">ID Card</div>
-          </div>
-          <div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">
-            <div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">BACK</div>
-            <div style="color:#6b7280;margin-bottom:12px;">ID Card</div>
-          </div>
-          <button id="uploadPhotoBtn" type="button" style="background:#1e90ff;color:white;border:none;padding:10px 16px;border-radius:6px;font-size:16px;cursor:pointer;">Upload Photos</button>
-        </div>`;
+        preview.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px;">'
+          + '<div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">'
+            + '<div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">FRONT</div>'
+            + '<div style="color:#6b7280;margin-bottom:12px;">ID Card</div>'
+          + '</div>'
+          + '<div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">'
+            + '<div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">BACK</div>'
+            + '<div style="color:#6b7280;margin-bottom:12px;">ID Card</div>'
+          + '</div>'
+          + '<button id="uploadPhotoBtn" type="button" style="background:#1e90ff;color:white;border:none;padding:10px 16px;border-radius:6px;font-size:16px;cursor:pointer;">Upload Photos</button>'
+        + '</div>';
       } else {
-        preview.innerHTML = `
-        <div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">
-          <div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">PASSPORT DATA PAGE</div>
-          <div style="color:#6b7280;margin-bottom:12px;">Passport</div>
-          <button id="uploadPhotoBtn" type="button" style="background:#1e90ff;color:white;border:none;padding:10px 16px;border-radius:6px;font-size:16px;cursor:pointer;">Upload Photos</button>
-        </div>`;
+        preview.innerHTML = '<div style="border:2px dashed #cbd5e1;border-radius:8px;padding:28px;text-align:center;background:#ffffff;">'
+          + '<div style="font-size:18px;font-weight:700;color:#374151;margin-bottom:8px;">PASSPORT DATA PAGE</div>'
+          + '<div style="color:#6b7280;margin-bottom:12px;">Passport</div>'
+          + '<button id="uploadPhotoBtn" type="button" style="background:#1e90ff;color:white;border:none;padding:10px 16px;border-radius:6px;font-size:16px;cursor:pointer;">Upload Photos</button>'
+        + '</div>';
       }
       // reattach listener
       const up = document.getElementById('uploadPhotoBtn');
