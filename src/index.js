@@ -31,17 +31,7 @@ export default {
         );
       }
 
-      <script>
-      document.getElementById('startBtn').addEventListener('click', () => {
-        const btn = document.getElementById('startBtn');
-        const msg = document.getElementById('message');
-        btn.disabled = true;
-        msg.className = 'loading';
-        msg.textContent = 'Setting up your verification…';
-        // small delay so user sees the message, then go to upload step
-        setTimeout(() => { window.location.href = '/kyc/upload'; }, 250);
-      });
-    </script>
+      
 async function handleWebhook(request, env, corsHeaders) {
   if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
 
